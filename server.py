@@ -198,5 +198,128 @@ def get_flutter_run_log(lines: int = 60) -> str:
     return deviceManager.get_flutter_run_log(lines=lines)
 
 
+@mcp.tool()
+def hot_reload_vscode_session(
+    project_dir: str,
+    package_name: str,
+    target: str = "lib/main.dart",
+    flutter_executable: str = "flutter",
+    debug_port: int | None = None,
+    debug_url: str | None = None,
+    additional_args: str | None = None,
+    attach_wait_seconds: int = 20,
+    action_wait_seconds: int = 4,
+) -> str:
+    """
+    Attach to an app already running from VS Code/IDE and trigger a one-shot hot reload.
+
+    Args:
+        project_dir (str): Flutter project directory on host
+        package_name (str): Android package name (for example, com.example.app)
+        target (str): Flutter target entrypoint
+        flutter_executable (str): Flutter binary name/path on host
+        debug_port (int | None): Optional VM service port (auto-discovered if omitted)
+        debug_url (str | None): Optional VM service URL (overrides debug_port)
+        additional_args (str | None): Additional args appended to `flutter attach`
+        attach_wait_seconds (int): Wait time for attach to stabilize
+        action_wait_seconds (int): Wait time after triggering reload before detach
+
+    Returns:
+        str: Attach/reload outcome and log tail
+    """
+    return deviceManager.hot_reload_vscode_session(
+        project_dir=project_dir,
+        package_name=package_name,
+        target=target,
+        flutter_executable=flutter_executable,
+        debug_port=debug_port,
+        debug_url=debug_url,
+        additional_args=additional_args,
+        attach_wait_seconds=attach_wait_seconds,
+        action_wait_seconds=action_wait_seconds,
+    )
+
+
+@mcp.tool()
+def hot_restart_vscode_session(
+    project_dir: str,
+    package_name: str,
+    target: str = "lib/main.dart",
+    flutter_executable: str = "flutter",
+    debug_port: int | None = None,
+    debug_url: str | None = None,
+    additional_args: str | None = None,
+    attach_wait_seconds: int = 20,
+    action_wait_seconds: int = 4,
+) -> str:
+    """
+    Attach to an app already running from VS Code/IDE and trigger a one-shot hot restart.
+
+    Args:
+        project_dir (str): Flutter project directory on host
+        package_name (str): Android package name (for example, com.example.app)
+        target (str): Flutter target entrypoint
+        flutter_executable (str): Flutter binary name/path on host
+        debug_port (int | None): Optional VM service port (auto-discovered if omitted)
+        debug_url (str | None): Optional VM service URL (overrides debug_port)
+        additional_args (str | None): Additional args appended to `flutter attach`
+        attach_wait_seconds (int): Wait time for attach to stabilize
+        action_wait_seconds (int): Wait time after triggering restart before detach
+
+    Returns:
+        str: Attach/restart outcome and log tail
+    """
+    return deviceManager.hot_restart_vscode_session(
+        project_dir=project_dir,
+        package_name=package_name,
+        target=target,
+        flutter_executable=flutter_executable,
+        debug_port=debug_port,
+        debug_url=debug_url,
+        additional_args=additional_args,
+        attach_wait_seconds=attach_wait_seconds,
+        action_wait_seconds=action_wait_seconds,
+    )
+
+
+@mcp.tool()
+def compare_screen_with_figma(
+    file_key: str,
+    node_id: str,
+    figma_token: str | None = None,
+    scale: float = 1.0,
+    use_absolute_bounds: bool = True,
+    grid_cols: int = 6,
+    grid_rows: int = 10,
+    output_dir: str = ".mcp_pixel_diff",
+) -> dict:
+    """
+    Pixel-compare current device screen against a Figma node export.
+
+    Args:
+        file_key (str): Figma file key
+        node_id (str): Figma node id (example: "21:1074")
+        figma_token (str | None): Optional Figma token. If omitted, uses FIGMA_TOKEN env var
+        scale (float): Figma export scale (supports 3.0 for "3x" export)
+        use_absolute_bounds (bool): Whether to request absolute bounds from Figma export API
+        grid_cols (int): Fragmentation columns for grid analysis
+        grid_rows (int): Fragmentation rows for grid analysis
+        output_dir (str): Host directory for generated artifacts
+
+    Returns:
+        dict: Diff report with metrics, zones, worst cells, and artifact paths
+    """
+    return deviceManager.compare_screen_with_figma(
+        file_key=file_key,
+        node_id=node_id,
+        figma_token=figma_token,
+        scale=scale,
+        use_absolute_bounds=use_absolute_bounds,
+        grid_cols=grid_cols,
+        grid_rows=grid_rows,
+        output_dir=output_dir,
+    )
+
+
 if __name__ == "__main__":
     mcp.run(transport="stdio")

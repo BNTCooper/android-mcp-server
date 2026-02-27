@@ -253,6 +253,76 @@ def get_flutter_run_log(lines: int = 60) -> str:
     """
 ```
 
+```python
+def hot_reload_vscode_session(
+    project_dir: str,
+    package_name: str,
+    target: str = "lib/main.dart",
+    flutter_executable: str = "flutter",
+    debug_port: int | None = None,
+    debug_url: str | None = None,
+) -> str:
+    """
+    Attach to a VS Code/IDE-run Flutter app and trigger one-shot hot reload.
+    If debug_port/debug_url is omitted, the server attempts logcat auto-discovery.
+    If auto-discovery fails, pass debug_port/debug_url from your IDE debug output.
+    """
+```
+
+```python
+def hot_restart_vscode_session(
+    project_dir: str,
+    package_name: str,
+    target: str = "lib/main.dart",
+    flutter_executable: str = "flutter",
+    debug_port: int | None = None,
+    debug_url: str | None = None,
+) -> str:
+    """
+    Attach to a VS Code/IDE-run Flutter app and trigger one-shot hot restart.
+    """
+```
+
+```python
+def compare_screen_with_figma(
+    file_key: str,
+    node_id: str,
+    figma_token: str | None = None,
+    scale: float = 1.0,
+    use_absolute_bounds: bool = True,
+    grid_cols: int = 6,
+    grid_rows: int = 10,
+    output_dir: str = ".mcp_pixel_diff",
+) -> dict:
+    """
+    Pixel-compare current screen against a Figma node export.
+    Use scale=3.0 for a 3x Figma export.
+    """
+```
+
+### Figma Pixel Diff Tool
+
+`compare_screen_with_figma` compares the current device screenshot against a Figma node export.
+
+- It supports high-resolution Figma export via `scale` (for example `scale=3.0`).
+- It returns raw metrics (`mae`, `rmse`, similarity), zone/grid fragmentation, and artifact paths.
+- It writes aligned images and a heatmap to disk for visual inspection.
+
+Token options:
+
+- Set `FIGMA_TOKEN` in the server environment.
+- Or pass `figma_token` directly in the tool call.
+
+Example:
+
+```python
+compare_screen_with_figma(
+    file_key="eFPh3zMX26ZTMSC2rdeKll",
+    node_id="21:1074",
+    scale=3.0,
+)
+```
+
 ## Contributing
 
 Contributions are welcome!
